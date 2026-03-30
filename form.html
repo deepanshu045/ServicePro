@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script> 
+</head>
+<body ng-controller="myC">
+    <form name="myForm">
+        Name:
+        <input type="text" name="username" ng-model="name" required>
+        <span ng-show="myForm.username.$invalid && myForm.username.$touched">Enter Name First</span>
+        <br>
+        <input type="email" name="email" ng-model="email" required >
+        <span ng-show="myForm.email.$invalid && myForm.email.$touched">Invalid Email Format</span>
+        <input type="button" value="Submit" ng-disabled="myForm.$invalid" ng-click="submit()">
+        <p>{{result}}</p>
+    </form>
+
+    <script>
+        const app=angular.module("myApp" , [])
+        app.controller("myC", function($scope){
+            $scope.submit=function(){
+                $scope.result="formss"
+            }
+        })
+    </script>
+
+</body>
+</html>
