@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router";
 import { Root } from "./components/Root";
 import { Dashboard } from "./components/Dashboard";
 import { Products } from "./components/Products";
-import { Services } from "./components/Services";
+
 import { Customers } from "./components/Customers";
 import { Billing } from "./components/Billing";
 import { Inventory } from "./components/Inventory";

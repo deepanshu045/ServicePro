@@ -1,10 +1,11 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { projectId, publicAnonKey } from '/utils/supabase/info';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 
 const supabase = createClient(
-  `https://${projectId}.supabase.co`,
-  publicAnonKey
+  supabaseUrl,
+ supabaseKey
 );
 
 interface User {
