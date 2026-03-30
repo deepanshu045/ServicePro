@@ -267,15 +267,7 @@ export function ServiceSchedule() {
                 </div>
               </div>
 
-              <div>
-                <Label>Notes</Label>
-                <Textarea
-                  value={formData.notes}
-                  onChange={(e) =>
-                    setFormData({ ...formData, notes: e.target.value })
-                  }
-                />
-              </div>
+            
 
               <div className="flex gap-2">
                 <Button type="submit" className="flex-1 bg-pink-600">

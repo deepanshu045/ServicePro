@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Plus, Edit, Trash2, Package } from "lucide-react";
 import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
@@ -18,6 +24,9 @@ interface Product {
   description: string;
 }
 
+// Keywords for automatic Electronics detection
+const electronicsKeywords = ["washing machine", "fridge", "ac", "tv", "microwave", "fan"];
+
 export function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -25,28 +34,44 @@ export function Products() {
   const [formData, setFormData] = useState({
     name: "",
     serialNumber: "",
-    category: "",
+    category: "Other", // default category
     price: "",
     stock: "",
     description: "",
   });
 
+  // Detect category based on name
+  const detectCategory = (name: string) => {
+    const lowerName = name.toLowerCase();
+    return electronicsKeywords.some((kw) => lowerName.includes(kw)) ? "Electronics" : "Other";
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
+    const category = detectCategory(formData.name);
+
     if (editingProduct) {
-      setProducts(products.map(p => 
-        p.id === editingProduct.id 
-          ? { ...editingProduct, ...formData, price: Number(formData.price), stock: Number(formData.stock) }
-          : p
-      ));
+      setProducts(
+        products.map((p) =>
+          p.id === editingProduct.id
+            ? {
+                ...editingProduct,
+                ...formData,
+                price: Number(formData.price),
+                stock: Number(formData.stock),
+                category: formData.category || category, // override if user selects button
+              }
+            : p
+        )
+      );
       toast.success("Product updated successfully");
     } else {
       const newProduct: Product = {
         id: Date.now().toString(),
         name: formData.name,
         serialNumber: formData.serialNumber,
-        category: formData.category,
+        category: formData.category || category,
         price: Number(formData.price),
         stock: Number(formData.stock),
         description: formData.description,
@@ -54,7 +79,7 @@ export function Products() {
       setProducts([...products, newProduct]);
       toast.success("Product added successfully");
     }
-    
+
     resetForm();
   };
 
@@ -62,7 +87,7 @@ export function Products() {
     setFormData({
       name: "",
       serialNumber: "",
-      category: "",
+      category: "Other",
       price: "",
       stock: "",
       description: "",
@@ -85,9 +110,12 @@ export function Products() {
   };
 
   const handleDelete = (id: string) => {
-    setProducts(products.filter(p => p.id !== id));
+    setProducts(products.filter((p) => p.id !== id));
     toast.success("Product deleted successfully");
   };
+
+  // Category buttons
+  const categoryButtons = ["Electronics", "Other"];
 
   return (
     <div className="p-4 pb-24">
@@ -110,7 +138,9 @@ export function Products() {
                 <Input
                   id="name"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -119,19 +149,32 @@ export function Products() {
                 <Input
                   id="serialNumber"
                   value={formData.serialNumber}
-                  onChange={(e) => setFormData({ ...formData, serialNumber: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, serialNumber: e.target.value })
+                  }
                   required
                 />
               </div>
+
+              {/* Category Buttons */}
               <div>
-                <Label htmlFor="category">Category *</Label>
-                <Input
-                  id="category"
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  required
-                />
+                <Label>Category *</Label>
+                <div className="flex gap-2 mt-1">
+                  {categoryButtons.map((cat) => (
+                    <Button
+                      key={cat}
+                      type="button"
+                      size="sm"
+                      variant={formData.category === cat ? "default" : "outline"}
+                      className={formData.category === cat ? "bg-blue-600 text-white" : ""}
+                      onClick={() => setFormData({ ...formData, category: cat })}
+                    >
+                      {cat}
+                    </Button>
+                  ))}
+                </div>
               </div>
+
               <div>
                 <Label htmlFor="price">Price *</Label>
                 <Input
@@ -139,7 +182,9 @@ export function Products() {
                   type="number"
                   step="0.01"
                   value={formData.price}
-                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, price: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -149,7 +194,9 @@ export function Products() {
                   id="stock"
                   type="number"
                   value={formData.stock}
-                  onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, stock: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -158,12 +205,17 @@ export function Products() {
                 <Textarea
                   id="description"
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                   rows={3}
                 />
               </div>
               <div className="flex gap-2">
-                <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700">
+                <Button
+                  type="submit"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700"
+                >
                   {editingProduct ? "Update" : "Add"} Product
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>

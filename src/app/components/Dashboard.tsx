@@ -26,7 +26,7 @@ export function Dashboard() {
     // { path: "/services", icon: Wrench, label: "Services", color: "bg-green-500" },
     { path: "/customers", icon: Users, label: "Customers", color: "bg-purple-500" },
     { path: "/billing", icon: FileText, label: "Create Bill", color: "bg-orange-500" },
-    { path: "/inventory", icon: Archive, label: "Inventory", color: "bg-teal-500" },
+   
     { path: "/warranty", icon: Shield, label: "Warranties", color: "bg-indigo-500" },
     { path: "/services", icon: Calendar, label: "Schedule Service", color: "bg-pink-500" },
     { path: "/defects", icon: AlertCircle, label: "Defects", color: "bg-red-500" },

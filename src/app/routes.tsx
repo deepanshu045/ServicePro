@@ -5,7 +5,7 @@ import { Products } from "./components/Products";
 
 import { Customers } from "./components/Customers";
 import { Billing } from "./components/Billing";
-import { Inventory } from "./components/Inventory";
+
 import { Warranty } from "./components/Warranty";
 import { ServiceSchedule } from "./components/ServiceSchedule";
 import { DefectTracking } from "./components/DefectTracking";
@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
       { path: "services", Component: ServiceSchedule },
       { path: "customers", Component: Customers },
       { path: "billing", Component: Billing },
-      { path: "inventory", Component: Inventory },
+     
       { path: "warranty", Component: Warranty },
       { path: "defects", Component: DefectTracking },
       { path: "search", Component: Search },

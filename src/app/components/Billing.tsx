@@ -152,7 +152,7 @@ export function Billing() {
   };
 
   const { subtotal, tax, total } = calculateTotals();
-  const upiPaymentString = `upi://pay?pa=${paymentUPI}&pn=DeepanshuStore&am=${generatedBill?.total?.toFixed(2)}&cu=INR`;
+  const upiPaymentString = `upi://pay?pa=${paymentUPI}&pn=YourStore&am=${generatedBill?.total.toFixed(2)}&cu=USD`;
 
   return (
     <div className="p-4 pb-24">
